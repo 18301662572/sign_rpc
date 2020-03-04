@@ -1,0 +1,20 @@
+{{define "web/index.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <script type="text/javascript" src="/script/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/script/index.js"></script>
+</head>
+<body>
+    <form>
+        <input type="hidden" id="uid" value="{{.uid}}">
+        <input type="hidden" id="state" value="{{.state}}">
+        <h3>欢迎来到Index页面</h3>
+        <label><input id="sign" type="button" value="签到"></label><br>
+        <label>{{.msg}}</label>
+    </form>
+</body>
+</html>
+{{end}}

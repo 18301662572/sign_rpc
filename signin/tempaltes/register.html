@@ -1,0 +1,22 @@
+{{define "web/register.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <script type="text/javascript" src="/script/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/script/register.js"></script>
+</head>
+<body>
+    <form action="/register" method="post" enctype="application/x-www-form-urlencoded">
+        <img src="/img/img.png"><br>
+        <label>用户名：</label>
+        <label><input type="text" id="username" name="username" /> </label><br>
+        <label>密码：</label>
+        <label><input type="password" id="password" name="password" /> </label><br>
+        <label><input id="checkbox" type="checkbox">阅读后同意</label><br>
+        <label><input id="register" type="submit" value="注册"></label>
+    </form>
+</body>
+</html>
+{{end}}

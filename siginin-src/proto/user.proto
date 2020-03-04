@@ -1,0 +1,63 @@
+syntax="proto3";
+
+package pb;
+
+service UserServiceExt{
+    //注册用户
+    rpc RegistUser(RegistUserReq) returns(RegistUserResp){}
+    //用户登录
+    rpc LoginUser(LoginUserReq) returns(LoginUserResp){}
+    //用户签到
+    rpc SignUser(SignUserReq) returns(SignUserResp){}
+    //获取用户最后一次的签到信息
+    rpc SignUserLast(SignUserLastReq) returns(SignUserLastResp){}
+}
+
+message RegistUserReq {
+    string user_name = 1 ;
+    string nick_name=2;
+    string password = 3 ;
+    int32 age=4;
+    string create_time=5;
+    int32 is_del=6;
+}
+
+message RegistUserResp {}
+
+message LoginUserReq{
+    string user_name=1;
+    string password=2;
+}
+
+message LoginUserResp{
+    int32 id=1;
+    string user_name=2;
+    string nick_name=3;
+    string password=4;
+    int32 age=5;
+    string create_time=6;
+    int32 is_del=7;
+}
+
+message SignUserReq{
+    int32 uid=1;
+    string sign_date=2;
+    int32 sign_count=3;
+    string create_time=4;
+    int32 is_del=5;
+}
+
+message SignUserResp{}
+
+message SignUserLastReq{
+    int32 uid=1;
+}
+
+message SignUserLastResp{
+    int32 id=1;
+    int32 uid=2;
+    string sign_date=3;
+    int32 sign_count=4;
+    string create_time=5;
+    int32 is_del=6;
+}
