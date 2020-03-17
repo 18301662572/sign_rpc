@@ -16,13 +16,13 @@ import (
 //设计一个连续签到的任务，连续签到7天，中间不能中断，如果中断了，就重新从第一天开始签到，连续签到三天奖励，连续签到7天奖励
 //使用gin框架, 模仿客户端 访问 http API服务（ApiGateWay）
 //目前存在的问题：
-//1.时间计算存在问题？？？签到出国一天清零，两个日期间隔有问题
+//1.时间计算存在问题？？？签到超过一天清零，两个日期间隔有问题
 //2.json.UnmarshalTypeError 不知道什么意思？？？
 // if err:=json.Unmarshal(u.Data,&user);err!=nil{
 //	if ute, ok := err.(*json.UnmarshalTypeError);
 //  	fmt.Printf("UnmarshalTypeError %v - %v - %v\n", ute.Value, ute.Type, ute.Offset)
 //	}
-//3. encoding/json 在go语言中可以json； 如果跨语言的话应该使用哪个包？？
+//3. encoding/json 在go语言中可以解析json； 如果跨语言的话应该使用哪个包？？
 
 
 var conn *grpc.ClientConn
