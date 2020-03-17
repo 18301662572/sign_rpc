@@ -20,7 +20,7 @@ var client pb.UserServiceExtClient
 //注册
 func RegisterHandler(w http.ResponseWriter, r *http.Request){
 	var data []byte
-	result:=new(model.SignInfo)
+	result:=new(model.UserInfo)
 	username := r.PostFormValue("username")
 	password := r.PostFormValue("password")
 	if username != "" && password != "" {
@@ -104,7 +104,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request){
 //获取用户最后一次签到信息
 func GetSignUserLastHandler(w http.ResponseWriter, r *http.Request){
 	var data []byte
-	var result =new(model.SignUserLast)
+	var result =new(model.UserInfo)
 	//获取用户最后一次签到信息
 	id:=r.PostFormValue("uid")
 	var (
@@ -151,7 +151,7 @@ func GetSignUserLastHandler(w http.ResponseWriter, r *http.Request){
 //用户签到操作
 func SignHandler(w http.ResponseWriter, r *http.Request){
 	var data []byte
-	var result =new(model.SignInfo)
+	var result =new(model.UserInfo)
 	//signCount 今天的签到次数
 	var (
 		signCount int64
@@ -203,7 +203,7 @@ func SignHandler(w http.ResponseWriter, r *http.Request){
 
 func main(){
 	//1.创建与gRPC服务端的连接
-	// （grpc.WithInsecure() 建立一个安全连接；注：与正常差别，在调用rpc接口时，指定自定义编解码）
+	//grpc.WithInsecure() 建立一个安全连接；注：与正常差别，在调用rpc接口时，指定自定义编解码
 	var err error
 	conn, err = grpc.Dial("127.0.0.1:8090", grpc.WithInsecure())
 	defer conn.Close()
@@ -223,6 +223,7 @@ func main(){
 	http.HandleFunc("/getsignuserlast", GetSignUserLastHandler)
 	//用户签到接口
 	http.HandleFunc("/sign", SignHandler)
+	//http监听端口
 	if err := http.ListenAndServe(":8082", nil);err!=nil{
 		fmt.Println("监听8082端口有误，err:",err)
 	}

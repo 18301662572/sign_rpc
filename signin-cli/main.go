@@ -14,8 +14,16 @@ import (
 )
 
 //设计一个连续签到的任务，连续签到7天，中间不能中断，如果中断了，就重新从第一天开始签到，连续签到三天奖励，连续签到7天奖励
-
 //使用gin框架, 模仿客户端 访问 http API服务（ApiGateWay）
+//目前存在的问题：
+//1.时间计算存在问题？？？签到出国一天清零，两个日期间隔有问题
+//2.json.UnmarshalTypeError 不知道什么意思？？？
+// if err:=json.Unmarshal(u.Data,&user);err!=nil{
+//	if ute, ok := err.(*json.UnmarshalTypeError);
+//  	fmt.Printf("UnmarshalTypeError %v - %v - %v\n", ute.Value, ute.Type, ute.Offset)
+//	}
+//3. encoding/json 在go语言中可以json； 如果跨语言的话应该使用哪个包？？
+
 
 var conn *grpc.ClientConn
 var client = &http.Client{}
@@ -54,7 +62,7 @@ func loginHandler(c *gin.Context) {
 			var u=new(model.UserInfo)
 			if err:= json.Unmarshal(resp,&u);err!=nil{
 				c.JSON(http.StatusOK, gin.H{
-					"msg":   "解析用户信息有误",
+					"msg":   "解析用户信息失败",
 					"error": err,
 				})
 				return
@@ -65,14 +73,20 @@ func loginHandler(c *gin.Context) {
 				})
 				return
 			}
-			if u.Data.Id!=0 {
-				//将用户信息加入缓存
-				c.SetCookie("ckusername", u.Data.Username, 20, "/", "127.0.0.1", false, true)
-				//跳转到index页面
-				index := fmt.Sprintf("/index?uid=%s", strconv.Itoa(int(u.Data.Id)))
-				c.Redirect(http.StatusMovedPermanently, index)
+			//二次解析
+			user:=new(model.User)
+			if err:=json.Unmarshal(u.Data,&user);err!=nil{
+				c.JSON(http.StatusOK, gin.H{
+					"msg":   "二次解析用户信息失败",
+					"error": err,
+				})
+				return
 			}
-
+			//将用户信息加入缓存
+			c.SetCookie("ckusername", user.Username, 20, "/", "127.0.0.1", false, true)
+			//跳转到index页面
+			index := fmt.Sprintf("/index?uid=%s", strconv.Itoa(int(user.Id)))
+			c.Redirect(http.StatusMovedPermanently, index)
 		} else {
 			c.JSON(http.StatusOK, gin.H{
 				"msg": "用户名或密码不能为空",
@@ -90,7 +104,7 @@ func loginHandler(c *gin.Context) {
 func indexHandler(c *gin.Context) {
 	uid:=c.Query("uid")
 	//获取用户最后一次签到信息
-	resp,err:=httpDo("/getsignuserlast",fmt.Sprintf("uid=",uid))
+	resp,err:=httpDo("/getsignuserlast",fmt.Sprintf("uid=%s",uid))
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"msg":   "服务器返回有误",
@@ -98,7 +112,7 @@ func indexHandler(c *gin.Context) {
 		})
 		return
 	}
-	var u =new(model.SignUserLastInfo)
+	var u =new(model.UserInfo)
 	if err:=json.Unmarshal(resp,&u);err!=nil{
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"msg": "解析用户签到信息有误！",
@@ -108,23 +122,29 @@ func indexHandler(c *gin.Context) {
 	}
 	if u.State==1{
 		c.JSON(http.StatusOK, gin.H{
-			"msg": "解析用户签到信息有误！",
+			"msg": "解析用户签到信息失败！",
 			"error": err,
 		})
 		return
 	}
-	if u.Data.Id != 0 {
-		if u.Data.SignDate < time.Now().Format("2006-01-02"){
-			c.HTML(http.StatusOK, "web/index.html", gin.H{
-				"uid": c.Query("uid"),
-				"state":"true",
+	var user=new(model.UserSign)
+	if err:=json.Unmarshal(u.Data,&user);err!=nil{
+		if ute, ok := err.(*json.UnmarshalTypeError); ok {
+			fmt.Printf("UnmarshalTypeError %v - %v - %v\n", ute.Value, ute.Type, ute.Offset)
+		}else{
+			c.JSON(http.StatusOK, gin.H{
+				"msg": "二次解析用户签到信息失败！",
+				"error": err,
 			})
-		}else {
-			c.HTML(http.StatusOK, "web/index.html", gin.H{
-				"uid": c.Query("uid"),
-			})
+			return
 		}
-	}else{
+	}
+	if user.SignDate < time.Now().Format("2006-01-02"){
+		c.HTML(http.StatusOK, "web/index.html", gin.H{
+			"uid": c.Query("uid"),
+			"state":"true",
+		})
+	}else {
 		c.HTML(http.StatusOK, "web/index.html", gin.H{
 			"uid": c.Query("uid"),
 		})
@@ -146,7 +166,7 @@ func registerHandler(c *gin.Context) {
 				return
 			}
 			//解析json
-			var u=new(model.SignInfo)
+			var u=new(model.UserInfo)
 			if err:= json.Unmarshal(resp,&u);err!=nil{
 				c.JSON(http.StatusOK, gin.H{
 					"msg":   "解析注册返回信息有误",
@@ -183,7 +203,7 @@ func signHandler(c *gin.Context){
 	//signCount 今天的签到次数
 	var signCount int32 = 1
 	//获取用户最后一次签到信息
-	resp,err:=httpDo("/getsignuserlast",fmt.Sprintf("uid=",uid))
+	resp,err:=httpDo("/getsignuserlast",fmt.Sprintf("uid=%s",uid))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"msg":   "服务器返回有误",
@@ -192,7 +212,7 @@ func signHandler(c *gin.Context){
 		return
 	}
 	//解析json
-	var u=new(model.SignUserLast)
+	var u=new(model.UserInfo)
 	if err:= json.Unmarshal(resp,&u);err!=nil{
 		c.JSON(http.StatusOK, gin.H{
 			"msg":   "解析用户最后一次签到信息有误",
@@ -202,29 +222,40 @@ func signHandler(c *gin.Context){
 	}
 	if u.State==1{
 		c.JSON(http.StatusOK, gin.H{
-			"msg": "查询用户最后一次签到信息有误！",
+			"msg": "查询用户最后一次签到信息失败！",
 			"error": err,
 		})
 		return
 	}
-	if u.Data.Id!=0 {
-		//判断用户的签到日期是否是昨天，如果是的话，签到次数+1；如果不是，签到次数=1
-		today := time.Now().Format("2006-01-02")
-		timeLayout := "2016/01/02"
-		loc, _ := time.LoadLocation("Local")
-		// 转成时间戳
-		startUnix, _ := time.ParseInLocation(timeLayout, u.Data.SignDate, loc)
-		endUnix, _ := time.ParseInLocation(timeLayout, today, loc)
-		startTime := startUnix.Unix()
-		endTime := endUnix.Unix()
-		// 求相差天数
-		date := (endTime - startTime) / 86400
-		if date <= 1 {
-			signCount += u.Data.SignCount
+	var user=new(model.UserSign)
+	if err:=json.Unmarshal(u.Data,&user);err!=nil{
+		if ute, ok := err.(*json.UnmarshalTypeError); ok {
+			fmt.Printf("UnmarshalTypeError %v - %v - %v\n", ute.Value, ute.Type, ute.Offset)
+		}else{
+			c.JSON(http.StatusOK, gin.H{
+				"msg": "二次解析用户最后一次签到信息失败！",
+				"error": err,
+			})
+			return
 		}
 	}
+	//判断用户的签到日期是否是昨天，如果是的话，签到次数+1；如果不是，签到次数=1
+	//时间计算存在问题？？？
+	today := time.Now().Format("2006-01-02")
+	timeLayout := "2016/01/02"
+	loc, _ := time.LoadLocation("Local")
+	// 转成时间戳
+	startUnix, _ := time.ParseInLocation(timeLayout, user.SignDate, loc)
+	endUnix, _ := time.ParseInLocation(timeLayout, today, loc)
+	startTime := startUnix.Unix()
+	endTime := endUnix.Unix()
+	// 求相差天数
+	date := (endTime - startTime) / 86400
+	if date <= 1 {
+		signCount += user.SignCount
+	}
 	//用户签到
-	_,err=httpDo("/sign",fmt.Sprintf("uid=%s&signcount=%s",uid,signCount))
+	_,err=httpDo("/sign",fmt.Sprintf("uid=%s&signcount=%d",uid,signCount))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"msg":   "服务器返回有误",
@@ -233,7 +264,7 @@ func signHandler(c *gin.Context){
 		return
 	}
 	//解析json
-	var s=new(model.SignInfo)
+	var s=new(model.UserInfo)
 	if err:= json.Unmarshal(resp,&s);err!=nil{
 		c.JSON(http.StatusOK, gin.H{
 			"msg":   s.Msg,
@@ -259,7 +290,7 @@ func signHandler(c *gin.Context){
 			"msg": "您已经连续签到3天，获得一张10元优惠券！",
 		})
 	} else {
-		msg := fmt.Sprintf("您已经连续签到%s天", signCount)
+		msg := fmt.Sprintf("您已经连续签到%d天", signCount)
 		c.JSON(http.StatusOK, gin.H{
 			"msg": msg,
 		})
