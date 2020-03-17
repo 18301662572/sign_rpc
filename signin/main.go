@@ -1,8 +1,8 @@
 package main
 
 import (
-	"code.oldbody.com/studygolang/mytest/signdemo/siginin-src/common"
-	"code.oldbody.com/studygolang/mytest/signdemo/siginin-src/pb"
+	"code.oldbody.com/studygolang/mytest/signdemo/siginin-svc/common"
+	"code.oldbody.com/studygolang/mytest/signdemo/siginin-svc/pb"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"
@@ -13,10 +13,11 @@ import (
 
 //设计一个连续签到的任务，连续签到7天，中间不能中断，如果中断了，就重新从第一天开始签到，连续签到三天奖励，连续签到7天奖励
 
-//使用gin框架,微服务
+//使用gin框架, http访问rpc
 
 var conn *grpc.ClientConn
 
+//登陆
 func loginHandler(c *gin.Context) {
 	if c.Request.Method == "POST" {
 		username := c.PostForm("username")
@@ -53,6 +54,7 @@ func loginHandler(c *gin.Context) {
 	}
 }
 
+//主页面
 func indexHandler(c *gin.Context) {
 	//1.实例化gRPC客户端
 	client := pb.NewUserServiceExtClient(conn)
@@ -85,6 +87,7 @@ func indexHandler(c *gin.Context) {
 	}
 }
 
+//注册
 func registerHandler(c *gin.Context) {
 	if c.Request.Method=="POST"{
 		username := c.PostForm("username")
@@ -124,6 +127,7 @@ func registerHandler(c *gin.Context) {
 	}
 }
 
+//签到
 func signHandler(c *gin.Context){
 	//1.实例化gRPC客户端
 	client := pb.NewUserServiceExtClient(conn)

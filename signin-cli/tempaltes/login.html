@@ -1,0 +1,19 @@
+{{define "web/login.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+    <form action="/login" method="post" enctype="application/x-www-form-urlencoded">
+        <label>用户名：</label>
+        <label><input type="text" name="username" /> </label><br>
+        <label>密码：</label>
+        <label><input type="password" name="password" /> </label><br>
+        <label><input type="submit" value="Submit"></label>
+        <label><input type="button" value="Register"></label><br>
+    </form>
+</body>
+</html>
+{{end}}

@@ -14,8 +14,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Go File" />
         <option value="JavaScript File" />
+        <option value="Go File" />
       </list>
     </option>
   </component>
@@ -28,12 +28,18 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="go" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="G:\GOWork\src\code.oldbody.com\studygolang\mytest\signdemo\signin-cli\model" />
+      <recent name="G:\GOWork\src\code.oldbody.com\studygolang\mytest\signdemo\signin-cli" />
+      <recent name="G:\GOWork\src\code.oldbody.com\studygolang\mytest\signdemo\signin-http" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="G:\GOWork\src\code.oldbody.com\studygolang\mytest\signdemo\signin-http\model" />
       <recent name="G:\GOWork\src\code.oldbody.com\studygolang\mytest\sign\siginin-src\pb" />
       <recent name="G:\GOWork\src\code.oldbody.com\studygolang\mytest\sign\signin\icon" />
     </key>
@@ -50,13 +56,13 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Go Build.go build main.go">
-    <configuration name="go build db.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Go Build.go build main.go (4)">
+    <configuration name="go build code.oldbody.com/studygolang/mytest/signdemo/signin-cli" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="sign" />
       <working_directory value="$PROJECT_DIR$/" />
-      <kind value="FILE" />
-      <filePath value="$PROJECT_DIR$/siginin-src/db/db.go" />
-      <package value="code.oldbody.com/studygolang/mytest/sign" />
+      <kind value="PACKAGE" />
+      <filePath value="$PROJECT_DIR$/signin-cli/main.go" />
+      <package value="code.oldbody.com/studygolang/mytest/signdemo/signin-cli" />
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
@@ -69,34 +75,40 @@
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
-    <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+    <configuration name="go build main.go (2)" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="sign" />
       <working_directory value="$PROJECT_DIR$/" />
       <kind value="FILE" />
-      <filePath value="$PROJECT_DIR$/signin/main.go" />
-      <package value="code.oldbody.com/studygolang/mytest/sign" />
+      <filePath value="$PROJECT_DIR$/siginin-svc/main.go" />
+      <package value="code.oldbody.com/studygolang/mytest/signdemo" />
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
-    <configuration name="go build usersign.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+    <configuration name="go build main.go (3)" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="sign" />
       <working_directory value="$PROJECT_DIR$/" />
       <kind value="FILE" />
-      <filePath value="$PROJECT_DIR$/siginin-src/db/usersign.go" />
-      <package value="code.oldbody.com/studygolang/mytest/sign" />
+      <filePath value="$PROJECT_DIR$/signin-http/main.go" />
+      <package value="code.oldbody.com/studygolang/mytest/signdemo" />
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
-    <configuration name="register.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/sign/signin/tempaltes/register.html" useBuiltInWebServerPort="true">
+    <configuration name="go build main.go (4)" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="sign" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/signin-cli/main.go" />
+      <package value="code.oldbody.com/studygolang/mytest/signdemo" />
+      <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Build.go build main.go" />
+        <item itemvalue="Go Build.go build main.go (4)" />
+        <item itemvalue="Go Build.go build main.go (3)" />
+        <item itemvalue="Go Build.go build main.go (2)" />
+        <item itemvalue="Go Build.go build code.oldbody.com/studygolang/mytest/signdemo/signin-cli" />
         <item itemvalue="Go Build.go build main.go (1)" />
-        <item itemvalue="Go Build.go build usersign.go" />
-        <item itemvalue="JavaScript Debug.register.html" />
-        <item itemvalue="Go Build.go build db.go" />
       </list>
     </recent_temporary>
   </component>
@@ -119,35 +131,6 @@
     </ignored-roots>
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/signin/main.go</url>
-          <line>30</line>
-          <option name="timeStamp" value="93" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/signin/main.go</url>
-          <line>29</line>
-          <option name="timeStamp" value="94" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/signin/main.go</url>
-          <line>27</line>
-          <option name="timeStamp" value="95" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/signin/main.go</url>
-          <line>136</line>
-          <option name="timeStamp" value="102" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/signin/main.go</url>
-          <line>137</line>
-          <option name="timeStamp" value="103" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="GoApplicationRunConfiguration">
         <watch expression="resp" language="go" />

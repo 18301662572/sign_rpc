@@ -1,7 +1,7 @@
 package db
 
 import (
-	"code.oldbody.com/studygolang/mytest/sign/siginin-src/entity"
+	"code.oldbody.com/studygolang/mytest/signdemo/siginin-svc/entity"
 	"database/sql"
 )
 

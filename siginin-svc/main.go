@@ -1,16 +1,16 @@
 package main
 import (
-	"code.oldbody.com/studygolang/mytest/signdemo/siginin-src/common"
-	"code.oldbody.com/studygolang/mytest/signdemo/siginin-src/db"
-	_ "code.oldbody.com/studygolang/mytest/signdemo/siginin-src/entity"
-	"code.oldbody.com/studygolang/mytest/signdemo/siginin-src/pb"
+	"code.oldbody.com/studygolang/mytest/signdemo/siginin-svc/common"
+	"code.oldbody.com/studygolang/mytest/signdemo/siginin-svc/db"
+	_ "code.oldbody.com/studygolang/mytest/signdemo/siginin-svc/entity"
+	"code.oldbody.com/studygolang/mytest/signdemo/siginin-svc/pb"
 	"context"
 	"fmt"
 	"google.golang.org/grpc"
 	"net"
 )
 
-//user服务，用户业务逻辑类Bll
+//user服务，RPC服务
 
 type UserServiceExtServer struct {
 }
